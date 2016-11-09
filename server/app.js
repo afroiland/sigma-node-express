@@ -15,8 +15,8 @@ app.set('port', process.env.PORT || 3000);
 var songs = [
   {
     artist: "Bruce Springstein",
-    title: "Born in the U.S.A."
-//    dateAdded: "Been here all along."
+    title: "Born in the U.S.A.",
+    dateAdded: "Been here all along."
   }
 ];
 
