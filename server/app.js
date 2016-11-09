@@ -4,6 +4,8 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 
+
+
 // puts post request body data and store it on req.body
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -14,6 +16,7 @@ var songs = [
   {
     artist: "Bruce Springstein",
     title: "Born in the U.S.A."
+//    dateAdded: "Been here all along."
   }
 ];
 
@@ -22,10 +25,16 @@ app.post('/songs', function(req, res) {
   // req.body is supplied by bodyParser above
   console.log("REQ body: ", req.body);
   var newSong = req.body;
-  songs.push(newSong);
-
-  // created new resource
-  res.sendStatus(201);
+  if (checkForDuplication(newSong)||checkforBlanks(newSong)){
+    res.sendStatus(500);
+  } else {
+    //dateAdded
+    newSong.dateAdded = new Date();
+    console.log(newSong.dateAdded);
+    // created new resource
+    songs.push(newSong);
+    res.sendStatus(201);
+  }
 });
 
 app.get('/songs', function(req, res) {
@@ -47,3 +56,21 @@ app.get('/*', function(req, res) {
 app.listen(app.get('port'), function() {
   console.log('Server is listening on port ' + app.get('port'));
 });
+
+function checkForDuplication(newSong){
+  for (var i = 0; i < songs.length; i++) {
+    if(songs[i].title===newSong.title){
+        return true;
+    }else{
+        return false;
+    }
+  }
+}
+
+function checkforBlanks(newSong){
+  if (newSong.title===""||newSong.artist===""){
+    return true;
+  }else{
+    return false;
+  }
+}

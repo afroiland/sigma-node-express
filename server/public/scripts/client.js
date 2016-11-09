@@ -9,6 +9,7 @@ $(document).ready(function() {
       newSong[field.name] = field.value;
     });
 
+
     console.log(newSong);
 
     // send song object to the Server
@@ -17,12 +18,13 @@ $(document).ready(function() {
       url: '/songs',
       data: newSong,
       success: function(response) {
-        console.log(response);
+        console.log(response);   //201, 401, etc.
         if(response == "Created") {
           getSongs();
-        } else {
-          alert("Oh no! Your song didn't save correctly.");
         }
+      },
+      error: function() {
+        alert("Oh no! Your song didn't save correctly.");
       }
     })
 
@@ -48,10 +50,10 @@ $(document).ready(function() {
       var $el = $("#songContainer").children().last();
       $el.append('<h3>' + songs[i].title + '</h3>');
       $el.append('<p>By: ' + songs[i].artist + '</p>');
+      $el.append('<p>'+songs[i].dateAdded+'</p>');
     }
 
   }
-
 
 
 });
